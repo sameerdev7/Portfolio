@@ -6,7 +6,7 @@ const { marked } = require('marked');
 const mkdirp = require('mkdirp');
 
 const POSTS_DIR = path.join(__dirname, 'posts');
-const DIST_DIR = path.join(__dirname, 'dist');
+const DIST_DIR = path.join(__dirname, 'docs');
 const POSTS_DIST = path.join(DIST_DIR, 'posts');
 const ASSETS_SRC = path.join(__dirname, 'assets');
 const ASSETS_DIST = path.join(DIST_DIR, 'assets');
