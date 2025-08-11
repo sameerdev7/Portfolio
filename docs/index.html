@@ -45,12 +45,40 @@ window.MathJax = {
       <h3 class="text-lg font-semibold mb-4">Recent Posts</h3>
       <div class="space-y-6">
         
-        <a href="posts/welcome.html" class="flex flex-col md:flex-row bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg hover:bg-gray-750 transition duration-200">
-          <img src="assets/oppie.jpg" alt="Welcome to My Blog" class="md:w-1/3 w-full object-cover">
-          <div class="p-6 flex flex-col justify-center">
-            <p class="text-xs text-gray-400 mb-1">8/10/2025</p>
-            <h3 class="text-lg font-bold mb-2">Welcome to My Blog</h3>
-            <p class="text-sm text-gray-300">A quick introduction to what this blog is about, and why I started it.</p>
+        <a href="posts/welcome.html" class="block bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg hover:bg-gray-750 transition duration-200">
+          <div class="flex flex-col md:flex-row h-full">
+            
+              <div class="md:w-1/3 w-full h-48 md:h-auto flex-shrink-0">
+                <img src="assets/oppie.jpg" alt="Welcome to My Blog" class="w-full h-full object-cover">
+              </div>
+            
+            <div class="p-6 flex flex-col justify-between flex-grow ">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <p class="text-xs text-gray-400">8/10/2025</p>
+                  <span class="text-xs text-gray-500">2 min read</span>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Welcome to My Blog</h3>
+                <p class="text-sm text-gray-300 mb-3">A quick introduction to what this blog is about, and why I started it.</p>
+              </div>
+              
+                <div class="flex flex-wrap gap-2">
+                  
+                    <span class="px-2 py-1 bg-gray-700 text-teal-400 text-xs rounded-full">
+                      introduction
+                    </span>
+                  
+                    <span class="px-2 py-1 bg-gray-700 text-teal-400 text-xs rounded-full">
+                      machine-learning
+                    </span>
+                  
+                    <span class="px-2 py-1 bg-gray-700 text-teal-400 text-xs rounded-full">
+                      blog
+                    </span>
+                  
+                </div>
+              
+            </div>
           </div>
         </a>
       </div>

@@ -25,23 +25,141 @@ window.MathJax = {
   </header>
 
   <main class="max-w-3xl mx-auto py-8 px-4 flex-grow">
-    <p class="text-sm text-gray-400 mb-2">8/10/2025</p>
+    <div class="flex items-center justify-between mb-2">
+      <p class="text-sm text-gray-400">8/10/2025</p>
+      <span class="text-sm text-gray-500">2 min read</span>
+    </div>
+    
     <h1 class="text-3xl font-bold mb-4">Welcome to My Blog</h1>
+    
+    
+      <div class="flex flex-wrap gap-2 mb-6">
+        
+          <span class="px-3 py-1 bg-gray-700 text-teal-400 text-sm rounded-full">
+            introduction
+          </span>
+        
+          <span class="px-3 py-1 bg-gray-700 text-teal-400 text-sm rounded-full">
+            machine-learning
+          </span>
+        
+          <span class="px-3 py-1 bg-gray-700 text-teal-400 text-sm rounded-full">
+            blog
+          </span>
+        
+      </div>
+    
+    
     <img src="../assets/oppie.jpg" alt="Welcome to My Blog" class="post-feature-img mb-6"/>
+    
+    
+        <div class="toc-clean bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8" style="background: #1a202c; border-color: #2d3748;">
+          <h3 class="text-lg font-semibold mb-4 text-gray-200">Table of Contents</h3>
+          <ul class="space-y-2">
+            
+              <li>
+                <a href="#deepseek-v3r1-understanding-reasoning-llms" class="text-blue-600 hover:text-blue-800 font-medium text-sm block" style="color: #4299e1;">
+                  1. DeepSeek V3/R1 - Understanding Reasoning LLMs
+                </a>
+                
+                  <ul class="ml-6 mt-1 space-y-1">
+                    
+                      <li>
+                        <a href="#multi-head-latent-attention-mla" class="text-blue-500 hover:text-blue-700 text-sm" style="color: #63b3ed;">
+                          1.1 Multi-Head Latent Attention (MLA)
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="#mixture-of-experts-moe" class="text-blue-500 hover:text-blue-700 text-sm" style="color: #63b3ed;">
+                          1.2 Mixture-of-Experts (MoE)
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="#deepseek-summary" class="text-blue-500 hover:text-blue-700 text-sm" style="color: #63b3ed;">
+                          1.3 DeepSeek Summary
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="#olmo-2" class="text-blue-600 hover:text-blue-800 font-medium text-sm block" style="color: #4299e1;">
+                  2. OLMo 2
+                </a>
+                
+                  <ul class="ml-6 mt-1 space-y-1">
+                    
+                      <li>
+                        <a href="#normalization-layer-placement" class="text-blue-500 hover:text-blue-700 text-sm" style="color: #63b3ed;">
+                          2.1 Normalization Layer Placement
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="#ok-norm" class="text-blue-500 hover:text-blue-700 text-sm" style="color: #63b3ed;">
+                          2.2 OK-Norm
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="#olmo-2-summary" class="text-blue-500 hover:text-blue-700 text-sm" style="color: #63b3ed;">
+                          2.3 OLMo 2 Summary
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </div>
+      
+    
     <article class="prose prose-invert max-w-none">
-      <p>Hello! This is my first post. I created this blog to document ML experiments, small projects, and random notes.</p>
-<h2 id="sample-code">Sample code</h2>
+      <h2 id="deepseek-v3r1---understanding-reasoning-llms">DeepSeek V3/R1 - Understanding Reasoning LLMs</h2>
+<h3 id="multi-head-latent-attention-mla">Multi-Head Latent Attention (MLA)</h3>
+<h3 id="mixture-of-experts-moe">Mixture-of-Experts (MoE)</h3>
+<h3 id="deepseek-summary">DeepSeek Summary</h3>
+<h2 id="olmo-2">OLMo 2</h2>
+<h3 id="normalization-layer-placement">Normalization Layer Placement</h3>
+<h3 id="ok-norm">OK-Norm</h3>
+<h3 id="olmo-2-summary">OLMo 2 Summary</h3>
+<p>Hello! This is my first post. I created this blog to document ML experiments, small projects, and random notes.</p>
+<!-- ## Why I Started This Blog -->
+
+<p>I wanted a place to share my thoughts on machine learning, document experiments, and write tutorials that might help others. This blog serves as both a learning tool for me and hopefully a resource for others interested in ML and development.</p>
+<!-- ## What You'll Find Here -->
+
+<p>You can expect to see content about:</p>
+<ul>
+<li>Machine learning experiments and research</li>
+<li>Programming tutorials and tips</li>
+<li>Project write-ups and case studies</li>
+<li>Random thoughts and observations</li>
+</ul>
+<!-- ## Sample Code -->
+
+<p>Here&#39;s a simple Python example:</p>
 <pre><code class="language-python">def greet(name):
     return f&quot;Hello, {name}!&quot;
 
 print(greet(&quot;World&quot;))
 </code></pre>
-<h2 id="math-example">Math example</h2>
-<p>Inline math: $E = mc^2$</p>
-<p>Block math:</p>
+<!-- ## Math Examples -->
+
+<p>Inline math works great: $E = mc^2$</p>
+<p>Block math equations also render beautifully:</p>
 <p>$$
 \int_0^1 x^2 , dx = \frac{1}{3}
 $$</p>
+<!-- ## Future Posts -->
+
+<p>I&#39;m planning to write about topics like neural networks, data visualization, and various programming techniques. Stay tuned!</p>
+<p>Thanks for reading, and welcome to my blog!</p>
 
     </article>
   </main>
@@ -60,5 +178,49 @@ $$</p>
 <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
 <script>Prism.highlightAll();</script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<script>
+// Smooth scrolling for TOC links
+document.addEventListener('DOMContentLoaded', function() {
+  const tocLinks = document.querySelectorAll('.toc a[href^="#"], .toc-minimal a[href^="#"], .toc-sidebar a[href^="#"]');
+  tocLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+  
+  // Optional: Highlight current section in TOC
+  const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
+  const tocLinks = document.querySelectorAll('.toc a, .toc-minimal a, .toc-sidebar a');
+  
+  function highlightCurrentSection() {
+    let current = '';
+    headings.forEach(heading => {
+      const rect = heading.getBoundingClientRect();
+      if (rect.top <= 100) {
+        current = heading.id;
+      }
+    });
+    
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+  
+  window.addEventListener('scroll', highlightCurrentSection);
+  highlightCurrentSection(); // Initial call
+});
+</script>
 </body>
 </html>
