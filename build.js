@@ -298,28 +298,28 @@ function renderIndex(posts) {
   const postCards = posts
     .map(
       p => `
-        <a href="posts/${p.slug}.html" class="block bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg hover:bg-gray-750 transition duration-200">
+        <a href="posts/${p.slug}.html" class="post-card-enhanced group">
           <div class="flex flex-col md:flex-row h-full">
             ${p.image ? `
-              <div class="md:w-1/3 w-full h-48 md:h-auto flex-shrink-0">
-                <img src="${p.image}" alt="${htmlEscape(p.title)}" class="w-full h-full object-cover">
+              <div class="md:w-1/3 w-full h-48 md:h-auto flex-shrink-0 overflow-hidden">
+                <img src="${p.image}" alt="${htmlEscape(p.title)}" class="post-card-image w-full h-full object-cover">
               </div>
             ` : ''}
             <div class="p-6 flex flex-col justify-between flex-grow ${p.image ? '' : 'w-full'}">
               <div>
                 <div class="flex items-center justify-between mb-2">
-                  <p class="text-xs text-gray-400">${htmlEscape(
+                  <p class="post-meta text-xs text-gray-400">${htmlEscape(
                     new Date(p.date).toLocaleDateString()
                   )}</p>
-                  <span class="text-xs text-gray-500">${p.readingTime} min read</span>
+                  <span class="post-meta text-xs text-gray-500">${p.readingTime} min read</span>
                 </div>
-                <h3 class="text-lg font-bold mb-2">${htmlEscape(p.title)}</h3>
-                <p class="text-sm text-gray-300 mb-3">${htmlEscape(p.excerpt)}</p>
+                <h3 class="post-card-title text-lg font-bold mb-2 text-gray-200">${htmlEscape(p.title)}</h3>
+                <p class="text-sm text-gray-300 mb-3 line-clamp-3">${htmlEscape(p.excerpt)}</p>
               </div>
               ${p.tags && p.tags.length > 0 ? `
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 mt-4">
                   ${p.tags.map(tag => `
-                    <span class="px-2 py-1 bg-gray-700 text-teal-400 text-xs rounded-full">
+                    <span class="tag px-2 py-1 bg-gray-700 text-teal-400 text-xs rounded-full border border-gray-600">
                       ${htmlEscape(tag)}
                     </span>
                   `).join('')}
@@ -355,11 +355,16 @@ window.MathJax = {
 </head>
 <body class="font-mono flex flex-col min-h-screen bg-gray-900 text-gray-200">
   <header class="flex justify-between items-center px-8 py-6 border-b border-gray-700">
-    <a href="../index.html" class="text-xl font-bold hover:text-teal-400">Sameer's Blog</a>
+    <a href="../index.html" class="flex items-center hover:opacity-80 transition-opacity">
+      <div class="w-10 h-10 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+        S
+      </div>
+    </a>
     <nav class="flex space-x-6 text-sm">
       <a href="../index.html" class="hover:text-teal-400">Home</a>
       <a href="../about.html" class="hover:text-teal-400">About</a>
       <a href="../skills.html" class="hover:text-teal-400">Skills</a>
+      <a href="../contact.html" class="hover:text-teal-400">Contact</a>
     </nav>
   </header>
 
@@ -393,11 +398,6 @@ window.MathJax = {
   </main>
 
   <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-700">
-    <div class="mb-2">Connect with me — 
-      <a href="https://github.com/" target="_blank" class="hover:text-teal-400">GitHub</a> • 
-      <a href="https://twitter.com/" target="_blank" class="hover:text-teal-400">Twitter</a> • 
-      <a href="https://linkedin.com/" target="_blank" class="hover:text-teal-400">LinkedIn</a>
-    </div>
     <div>&copy; ${new Date().getFullYear()} ${htmlEscape(siteMeta.title)}</div>
   </footer>
 
@@ -464,7 +464,7 @@ async function writeStaticFiles(posts) {
     'utf8'
   );
 
-  const staticFiles = ['about.html', 'skills.html', 'style.css'];
+  const staticFiles = ['about.html', 'skills.html', 'contact.html', 'style.css'];
   for (const f of staticFiles) {
     const src = path.join(__dirname, f);
     try {

@@ -1,85 +1,262 @@
-/* style.css - extremely easy on eyes minimal dark theme */
-:root{
-  --bg:#0b1220;
-  --panel:#0f1724;
-  --muted:#9aa8b3;
-  --text:#dbeafe;
-  --accent:#14b8a6;
+/* ========================================
+   MINIMAL DARK THEME - EASY ON EYES
+======================================== */
+
+:root {
+  --bg: #0b1220;
+  --panel: #0f1724;
+  --muted: #9aa8b3;
+  --text: #dbeafe;
+  --accent: #14b8a6;
 }
-body{
-  background:var(--bg);
-  color:var(--text);
+
+/* ========================================
+   BASE STYLES
+======================================== */
+
+body {
+  background: var(--bg);
+  color: var(--text);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-  margin:0;
-}
-a{ color:inherit; text-decoration:none; }
-header, footer{ background:transparent; }
-
-/* Enhanced post cards with fixed dimensions */
-.post-card{
-  display:flex; 
-  gap:1rem; 
-  border:1px solid #21303a; 
-  padding:0.75rem; 
-  border-radius:0.5rem; 
-  transition:border-color .15s; 
-  align-items:center;
-  background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-  min-height: 160px;
-}
-.post-card:hover{ border-color:var(--accent); }
-
-.card-img{ 
-  width:140px; 
-  height:92px; 
-  object-fit:cover; 
-  border-radius:0.375rem; 
-  flex-shrink:0; 
+  margin: 0;
 }
 
-.card-body{ flex:1; }
-.post-date{ font-size:.8rem; color:#94a3b8; }
-.post-title{ margin:.25rem 0; font-size:1.125rem; color:var(--text); }
-.post-excerpt{ color:var(--muted); margin:0; }
-
-/* post page image */
-.post-feature-img{ 
-  width:100%; 
-  max-height:420px; 
-  object-fit:cover; 
-  border-radius:0.5rem; 
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-/* code block tweaks */
-pre{ 
-  background:var(--panel); 
-  padding:1rem; 
-  border-radius:0.5rem; 
-  overflow-x:auto; 
-  margin:0 0 1rem 0; 
-}
-code{ font-family:inherit; }
-
-/* responsive grid */
-.posts-grid{ 
-  display:grid; 
-  gap:1.5rem; 
-  grid-template-columns:1fr; 
-}
-@media(min-width:768px){ 
-  .posts-grid{ 
-    grid-template-columns:1fr 1fr; 
-  } 
+header, footer {
+  background: transparent;
 }
 
-/* footer smaller */
-footer{ font-size:0.9rem; }
+html {
+  scroll-behavior: smooth;
+}
 
-/* improve article typography slightly */
-.prose img{ border-radius:0.5rem; }
-.prose h2, .prose h3{ color:var(--text); margin-top:1.5rem; }
+/* ========================================
+   POST CARDS - ENHANCED
+======================================== */
 
-/* CLEAN TOC STYLE (like the design you showed) */
+.post-card-enhanced {
+  display: block;
+  background: #1f2937;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #374151;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.post-card-enhanced:hover {
+  background: #374151;
+  transform: scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: #14b8a6;
+}
+
+.post-card-enhanced:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.3);
+  border-color: #14b8a6;
+}
+
+/* Post card image effects */
+.post-card-enhanced .post-card-image {
+  transition: transform 0.3s ease;
+}
+
+.post-card-enhanced:hover .post-card-image {
+  transform: scale(1.05);
+}
+
+/* Post card title effects */
+.post-card-enhanced .post-card-title {
+  transition: color 0.3s ease;
+}
+
+.post-card-enhanced:hover .post-card-title {
+  color: #14b8a6;
+}
+
+/* Post card meta effects */
+.post-card-enhanced .post-meta {
+  transition: color 0.3s ease;
+}
+
+.post-card-enhanced:hover .post-meta {
+  color: #9ca3af;
+}
+
+/* Post card tag effects */
+.post-card-enhanced .tag {
+  transition: all 0.2s ease;
+}
+
+.post-card-enhanced:hover .tag {
+  background: rgba(20, 184, 166, 0.1);
+  border-color: #14b8a6;
+  transform: translateY(-1px);
+}
+
+/* Gradient overlay on hover */
+.post-card-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.post-card-enhanced:hover::before {
+  opacity: 1;
+}
+
+.post-card-enhanced > div {
+  position: relative;
+  z-index: 2;
+}
+
+/* Staggered animations */
+.post-card-enhanced:nth-child(1) { animation-delay: 0.1s; }
+.post-card-enhanced:nth-child(2) { animation-delay: 0.2s; }
+.post-card-enhanced:nth-child(3) { animation-delay: 0.3s; }
+.post-card-enhanced:nth-child(4) { animation-delay: 0.4s; }
+.post-card-enhanced:nth-child(5) { animation-delay: 0.5s; }
+
+/* ========================================
+   LEGACY POST CARD STYLES
+======================================== */
+
+.card-img {
+  width: 140px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 0.375rem;
+  flex-shrink: 0;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.post-date {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.post-title {
+  margin: 0.25rem 0;
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
+.post-excerpt {
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ========================================
+   POST FEATURE IMAGE
+======================================== */
+
+.post-feature-img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+/* ========================================
+   CODE BLOCKS
+======================================== */
+
+pre {
+  background: var(--panel);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0 0 1rem 0;
+}
+
+code {
+  font-family: inherit;
+}
+
+/* ========================================
+   LAYOUT & GRID
+======================================== */
+
+.posts-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .posts-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+footer {
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   TYPOGRAPHY & PROSE
+======================================== */
+
+.prose img {
+  border-radius: 0.5rem;
+}
+
+.prose h2,
+.prose h3 {
+  color: var(--text);
+  margin-top: 1.5rem;
+}
+
+.prose h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #374151;
+  scroll-margin-top: 2rem;
+}
+
+.prose h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 2rem;
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 2rem;
+}
+
+/* ========================================
+   TABLE OF CONTENTS STYLES
+======================================== */
+
+.toc {
+  position: static;
+  z-index: auto;
+}
+
+/* Clean TOC Style */
 .toc-clean {
   margin: 1.5rem 0;
   max-width: 100%;
@@ -106,7 +283,6 @@ footer{ font-size:0.9rem; }
   color: #60a5fa !important;
 }
 
-/* Sub-items (H3+) styling */
 .toc-clean ul ul {
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
@@ -116,13 +292,7 @@ footer{ font-size:0.9rem; }
   margin: 0.25rem 0;
 }
 
-/* Remove sticky positioning */
-.toc {
-  position: static;
-  z-index: auto;
-}
-
-/* MINIMAL TOC STYLE */
+/* Minimal TOC Style */
 .toc-minimal {
   margin: 1rem 0;
 }
@@ -151,16 +321,7 @@ footer{ font-size:0.9rem; }
   font-size: 0.75rem;
 }
 
-/* NUMBERED TOC STYLE */
-.counter-reset-toc {
-  counter-reset: toc-counter;
-}
-
-.counter-increment-toc {
-  counter-increment: toc-counter;
-}
-
-/* SIDEBAR TOC STYLE */
+/* Sidebar TOC Style */
 .toc-sidebar {
   max-height: 60vh;
   overflow-y: auto;
@@ -189,7 +350,32 @@ footer{ font-size:0.9rem; }
   margin: 0.125rem 0;
 }
 
-/* Tag styles */
+/* TOC Animations */
+.toc a,
+.toc-minimal a,
+.toc-sidebar a {
+  transform: translateX(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toc a:hover,
+.toc-minimal a:hover {
+  transform: translateX(4px);
+}
+
+/* Numbered TOC Style */
+.counter-reset-toc {
+  counter-reset: toc-counter;
+}
+
+.counter-increment-toc {
+  counter-increment: toc-counter;
+}
+
+/* ========================================
+   TAGS & BADGES
+======================================== */
+
 .tag {
   display: inline-block;
   padding: 0.25rem 0.75rem;
@@ -207,14 +393,72 @@ footer{ font-size:0.9rem; }
   border-color: var(--accent);
 }
 
-/* Reading time badge */
 .reading-time {
   color: var(--muted);
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-/* Better responsive behavior for cards */
+/* ========================================
+   UTILITY CLASSES
+======================================== */
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+/* ========================================
+   PROGRESS INDICATOR
+======================================== */
+
+.toc-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent) var(--scroll-progress, 0%), transparent var(--scroll-progress, 0%));
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+/* ========================================
+   ANIMATIONS & KEYFRAMES
+======================================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+
 @media (max-width: 767px) {
   .post-card {
     flex-direction: column;
@@ -228,54 +472,15 @@ footer{ font-size:0.9rem; }
     margin-bottom: 0.5rem;
   }
   
-  /* Hide sidebar TOC on mobile */
   .toc-sidebar {
     display: none;
   }
-}
-
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Better heading spacing in articles */
-.prose h2 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #374151;
-  scroll-margin-top: 2rem; /* Account for sticky header */
-}
-
-.prose h3 {
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-  scroll-margin-top: 2rem;
-}
-
-.prose h4, .prose h5, .prose h6 {
-  scroll-margin-top: 2rem;
-}
-
-/* Custom TOC animations */
-.toc a, .toc-minimal a, .toc-sidebar a {
-  transform: translateX(0);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.toc a:hover, .toc-minimal a:hover {
-  transform: translateX(4px);
-}
-
-/* Progress indicator for TOC (optional) */
-.toc-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--accent) var(--scroll-progress, 0%), transparent var(--scroll-progress, 0%));
-  z-index: 1000;
-  transition: opacity 0.3s ease;
+  
+  .post-card-enhanced:hover {
+    transform: scale(1.01);
+  }
+  
+  .post-card-enhanced {
+    animation: fadeInUp 0.4s ease-out;
+  }
 }

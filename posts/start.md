@@ -3,7 +3,7 @@ title: "Test"
 date: "2025-08-11"
 excerpt: "Testing added features"
 image: "assets/deepseek-arch.png"
-slug: "welcome"
+slug: "test"
 tags: ["ml", "dl", "dl"]
 toc:
   - { title: "Introduction", id: "introduction", level: 1 }
