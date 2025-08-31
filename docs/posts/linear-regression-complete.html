@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Linear Regression: From Theory to Implementation - Goku's Blog</title>
+
+
+    <!-- Essential Meta Tags -->
+    <meta property="og:title" content="Linear Regression: From Theory to Implementation - Goku's Blog">
+    <meta property="og:description" content="A comprehensive guide to understanding linear regression from mathematical foundations to practical Python implementation, including gradient descent and real-world applications.">
+    <meta property="og:image" content="https://sameerdev7.github.io/assets/son_kun2.jpg">
+    <meta property="og:url" content="https://sameerdev7.github.io//posts/linear-regression-complete.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Goku's Blog">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Linear Regression: From Theory to Implementation - Goku's Blog">
+    <meta name="twitter:description" content="A comprehensive guide to understanding linear regression from mathematical foundations to practical Python implementation, including gradient descent and real-world applications.">
+    <meta name="twitter:image" content="https://sameerdev7.github.io/assets/son_kun2.jpg">
+    <meta name="twitter:creator" content="@_sammeeer">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="description" content="A comprehensive guide to understanding linear regression from mathematical foundations to practical Python implementation, including gradient descent and real-world applications.">
+    <meta name="author" content="Goku">
+    
+    <!-- Article specific meta -->
+    <meta property="article:author" content="Goku">
+    <meta property="article:published_time" content="2025-08-31T00:00:00.000Z">
+    <meta property="article:tag" content="machine-learning">
+    <meta property="article:tag" content="statistics">
+    <meta property="article:tag" content="python">
+    <meta property="article:tag" content="mathematics">
+    <meta property="article:tag" content="regression">
+    
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet" />
+<script>
+window.MathJax = {
+  tex: { inlineMath: [[', '], ['\\(', '\\)']] },
+  svg: { fontCache: 'global' }
+};
+
+// Theme functionality
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+  const icon = document.querySelector('.theme-icon');
+  if (icon) {
+    icon.textContent = theme === 'light' ? '🌙' : '☀️';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initTheme);
+</script>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="font-sans flex flex-col min-h-screen">
+  <header class="flex justify-between items-center px-8 py-6 border-b">
+    <a href="../index.html" class="flex items-center hover:opacity-80 transition-opacity">
+      <span class="text-xl font-bold">Goku</span>
+    </a>
+    <div class="flex items-center space-x-6">
+      <nav class="flex space-x-6 text-sm">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="../about.html" class="nav-link">About</a>
+        <a href="../skills.html" class="nav-link">Skills</a>
+        <a href="../contact.html" class="nav-link">Contact</a>
+      </nav>
+      <button onclick="toggleTheme()" class="theme-toggle" title="Toggle theme">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto py-8 px-8 flex-grow">
+    <article class="max-w-3xl mx-auto">
+      <header class="mb-8">
+        <div class="flex items-center justify-between mb-4 text-secondary">
+          <time class="text-sm">8/31/2025</time>
+          <span class="text-sm">10 min read</span>
+        </div>
+        
+        <h1 class="text-4xl font-bold mb-4">Linear Regression: From Theory to Implementation</h1>
+        
+        
+          <div class="flex flex-wrap gap-2 mb-6">
+            
+              <span class="tag">
+                machine-learning
+              </span>
+            
+              <span class="tag">
+                statistics
+              </span>
+            
+              <span class="tag">
+                python
+              </span>
+            
+              <span class="tag">
+                mathematics
+              </span>
+            
+              <span class="tag">
+                regression
+              </span>
+            
+          </div>
+        
+        
+        
+      </header>
+      
+      
+    <div class="toc-professional">
+      <h3>On this page</h3>
+      <ul>
+        
+          <li>
+            <a href="#introduction">
+              Introduction
+            </a>
+            
+          </li>
+        
+          <li>
+            <a href="#mathematical-foundations">
+              Mathematical Foundations
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#the-linear-model">
+                      The Linear Model
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#multiple-linear-regression">
+                      Multiple Linear Regression
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#cost-function">
+                      Cost Function
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#analytical-solution-normal-equation">
+              Analytical Solution: Normal Equation
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#deriving-the-normal-equation">
+                      Deriving the Normal Equation
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#implementation">
+                      Implementation
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#gradient-descent-implementation">
+              Gradient Descent Implementation
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#the-algorithm">
+                      The Algorithm
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#batch-gradient-descent">
+                      Batch Gradient Descent
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#stochastic-gradient-descent">
+                      Stochastic Gradient Descent
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#model-evaluation-and-metrics">
+              Model Evaluation and Metrics
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#common-regression-metrics">
+                      Common Regression Metrics
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#visualization">
+                      Visualization
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#advanced-topics">
+              Advanced Topics
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#regularization">
+                      Regularization
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#ridge-regression-l2-regularization">
+                      Ridge Regression (L2 Regularization)
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#lasso-regression-l1-regularization">
+                      Lasso Regression (L1 Regularization)
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#feature-scaling">
+                      Feature Scaling
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#real-world-example-house-price-prediction">
+              Real-World Example: House Price Prediction
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#training-the-multi-feature-model">
+                      Training the Multi-feature Model
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#key-assumptions-and-limitations">
+              Key Assumptions and Limitations
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#assumptions-of-linear-regression">
+                      Assumptions of Linear Regression
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#when-linear-regression-fails">
+                      When Linear Regression Fails
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+          <li>
+            <a href="#conclusion">
+              Conclusion
+            </a>
+            
+              <ul>
+                
+                  <li>
+                    <a href="#key-takeaways">
+                      Key Takeaways
+                    </a>
+                  </li>
+                
+                  <li>
+                    <a href="#next-steps">
+                      Next Steps
+                    </a>
+                  </li>
+                
+              </ul>
+            
+          </li>
+        
+      </ul>
+    </div>
+  
+      
+      <div class="prose">
+        <h2 id="introduction">Introduction</h2>
+<p>Linear regression is one of the fundamental algorithms in machine learning and statistics. Despite its simplicity, it forms the backbone of many advanced techniques and provides crucial insights into the relationship between variables. In this comprehensive guide, we&#39;ll explore linear regression from its mathematical foundations to practical implementation.</p>
+<p>Whether you&#39;re a beginner looking to understand the basics or an experienced practitioner wanting to refresh your knowledge, this post will take you through the complete journey of linear regression.</p>
+<h2 id="mathematical-foundations">Mathematical Foundations</h2>
+<h3 id="the-linear-model">The Linear Model</h3>
+<p>At its core, linear regression assumes a linear relationship between input features and the target variable. For a single feature, this relationship can be expressed as:</p>
+<p>$$y = \beta_0 + \beta_1 x + \epsilon$$</p>
+<p>Where:</p>
+<ul>
+<li>$y$ is the dependent variable (target)</li>
+<li>$x$ is the independent variable (feature)</li>
+<li>$\beta_0$ is the y-intercept (bias term)</li>
+<li>$\beta_1$ is the slope (weight)</li>
+<li>$\epsilon$ is the error term</li>
+</ul>
+<h3 id="multiple-linear-regression">Multiple Linear Regression</h3>
+<p>For multiple features, we extend this to:</p>
+<p>$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n + \epsilon$$</p>
+<p>Or in matrix form:</p>
+<p>$$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$$</p>
+<p>Where $\mathbf{X}$ is our feature matrix and $\boldsymbol{\beta}$ is our parameter vector.</p>
+<h3 id="cost-function">Cost Function</h3>
+<p>The goal is to find the best parameters $\boldsymbol{\beta}$ that minimize the prediction error. We use the Mean Squared Error (MSE) as our cost function:</p>
+<p>$$J(\boldsymbol{\beta}) = \frac{1}{2m} \sum_{i=1}^{m} (h_{\boldsymbol{\beta}}(\mathbf{x}^{(i)}) - y^{(i)})^2$$</p>
+<p>Where $m$ is the number of training examples and $h_{\boldsymbol{\beta}}(\mathbf{x}^{(i)})$ is our prediction for the $i$-th example.</p>
+<h2 id="analytical-solution-normal-equation">Analytical Solution: Normal Equation</h2>
+<h3 id="deriving-the-normal-equation">Deriving the Normal Equation</h3>
+<p>To find the optimal parameters analytically, we take the derivative of the cost function with respect to $\boldsymbol{\beta}$ and set it to zero:</p>
+<p>$$\frac{\partial J(\boldsymbol{\beta})}{\partial \boldsymbol{\beta}} = \mathbf{X}^T(\mathbf{X}\boldsymbol{\beta} - \mathbf{y}) = 0$$</p>
+<p>Solving for $\boldsymbol{\beta}$:</p>
+<p>$$\mathbf{X}^T\mathbf{X}\boldsymbol{\beta} = \mathbf{X}^T\mathbf{y}$$</p>
+<p>$$\boldsymbol{\beta} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$$</p>
+<p>This is the <strong>Normal Equation</strong>, which gives us the optimal parameters in closed form.</p>
+<h3 id="implementation">Implementation</h3>
+<p>Here&#39;s how to implement the normal equation in Python:</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_regression
+
+def normal_equation(X, y):
+    &quot;&quot;&quot;
+    Compute the optimal parameters using the normal equation.
+    
+    Parameters:
+    X (numpy.ndarray): Feature matrix (m x n)
+    y (numpy.ndarray): Target vector (m x 1)
+    
+    Returns:
+    numpy.ndarray: Optimal parameters (n x 1)
+    &quot;&quot;&quot;
+    # Add bias term (column of ones)
+    X_with_bias = np.c_[np.ones((X.shape[0], 1)), X]
+    
+    # Compute normal equation
+    theta_optimal = np.linalg.inv(X_with_bias.T @ X_with_bias) @ X_with_bias.T @ y
+    
+    return theta_optimal
+
+# Generate sample data
+np.random.seed(42)
+X, y = make_regression(n_samples=100, n_features=1, noise=20, random_state=42)
+
+# Solve using normal equation
+theta = normal_equation(X, y)
+
+print(f&quot;Optimal parameters: θ₀ = {theta[0]:.2f}, θ₁ = {theta[1]:.2f}&quot;)
+</code></pre>
+<h2 id="gradient-descent-implementation">Gradient Descent Implementation</h2>
+<h3 id="the-algorithm">The Algorithm</h3>
+<p>While the normal equation provides an analytical solution, gradient descent offers an iterative approach that&#39;s more scalable for large datasets. The update rule is:</p>
+<p>$$\beta_j := \beta_j - \alpha \frac{\partial J(\boldsymbol{\beta})}{\partial \beta_j}$$</p>
+<p>Where $\alpha$ is the learning rate.</p>
+<h3 id="batch-gradient-descent">Batch Gradient Descent</h3>
+<pre><code class="language-python">def compute_cost(X, y, theta):
+    &quot;&quot;&quot;
+    Compute the cost function for linear regression.
+    
+    Parameters:
+    X (numpy.ndarray): Feature matrix with bias column
+    y (numpy.ndarray): Target vector
+    theta (numpy.ndarray): Parameter vector
+    
+    Returns:
+    float: Cost value
+    &quot;&quot;&quot;
+    m = len(y)
+    predictions = X @ theta
+    cost = (1 / (2 * m)) * np.sum((predictions - y) ** 2)
+    return cost
+
+def gradient_descent(X, y, theta, alpha, num_iterations):
+    &quot;&quot;&quot;
+    Perform gradient descent to optimize theta.
+    
+    Parameters:
+    X (numpy.ndarray): Feature matrix with bias column
+    y (numpy.ndarray): Target vector
+    theta (numpy.ndarray): Initial parameter vector
+    alpha (float): Learning rate
+    num_iterations (int): Number of iterations
+    
+    Returns:
+    tuple: (optimized theta, cost history)
+    &quot;&quot;&quot;
+    m = len(y)
+    cost_history = []
+    
+    for i in range(num_iterations):
+        # Compute predictions
+        predictions = X @ theta
+        
+        # Compute errors
+        errors = predictions - y
+        
+        # Update parameters
+        theta = theta - (alpha / m) * (X.T @ errors)
+        
+        # Store cost
+        cost = compute_cost(X, y, theta)
+        cost_history.append(cost)
+        
+        # Print progress
+        if i % 100 == 0:
+            print(f&quot;Iteration {i}: Cost = {cost:.4f}&quot;)
+    
+    return theta, cost_history
+
+# Initialize parameters
+np.random.seed(42)
+X_with_bias = np.c_[np.ones((X.shape[0], 1)), X]
+initial_theta = np.random.randn(X_with_bias.shape[1])
+
+# Run gradient descent
+alpha = 0.01
+num_iterations = 1000
+theta_gd, cost_history = gradient_descent(X_with_bias, y, initial_theta, alpha, num_iterations)
+
+print(f&quot;\nGradient Descent Result: θ₀ = {theta_gd[0]:.2f}, θ₁ = {theta_gd[1]:.2f}&quot;)
+</code></pre>
+<h3 id="stochastic-gradient-descent">Stochastic Gradient Descent</h3>
+<p>For even larger datasets, we can use Stochastic Gradient Descent (SGD):</p>
+<pre><code class="language-python">def stochastic_gradient_descent(X, y, theta, alpha, num_epochs):
+    &quot;&quot;&quot;
+    Perform stochastic gradient descent.
+    
+    Parameters:
+    X (numpy.ndarray): Feature matrix with bias column
+    y (numpy.ndarray): Target vector
+    theta (numpy.ndarray): Initial parameter vector
+    alpha (float): Learning rate
+    num_epochs (int): Number of epochs
+    
+    Returns:
+    tuple: (optimized theta, cost history)
+    &quot;&quot;&quot;
+    m = len(y)
+    cost_history = []
+    
+    for epoch in range(num_epochs):
+        # Shuffle the data
+        indices = np.random.permutation(m)
+        X_shuffled = X[indices]
+        y_shuffled = y[indices]
+        
+        for i in range(m):
+            # Select one sample
+            xi = X_shuffled[i:i+1]
+            yi = y_shuffled[i:i+1]
+            
+            # Compute prediction and error for this sample
+            prediction = xi @ theta
+            error = prediction - yi
+            
+            # Update parameters
+            theta = theta - alpha * (xi.T @ error).flatten()
+        
+        # Compute cost for the epoch
+        cost = compute_cost(X, y, theta)
+        cost_history.append(cost)
+        
+        if epoch % 10 == 0:
+            print(f&quot;Epoch {epoch}: Cost = {cost:.4f}&quot;)
+    
+    return theta, cost_history
+
+# Run SGD
+theta_sgd, cost_history_sgd = stochastic_gradient_descent(
+    X_with_bias, y, initial_theta.copy(), alpha=0.01, num_epochs=50
+)
+
+print(f&quot;SGD Result: θ₀ = {theta_sgd[0]:.2f}, θ₁ = {theta_sgd[1]:.2f}&quot;)
+</code></pre>
+<h2 id="model-evaluation-and-metrics">Model Evaluation and Metrics</h2>
+<h3 id="common-regression-metrics">Common Regression Metrics</h3>
+<p>Let&#39;s implement various metrics to evaluate our model:</p>
+<pre><code class="language-python">def evaluate_model(y_true, y_pred):
+    &quot;&quot;&quot;
+    Compute various regression metrics.
+    
+    Parameters:
+    y_true (numpy.ndarray): True target values
+    y_pred (numpy.ndarray): Predicted values
+    
+    Returns:
+    dict: Dictionary of metrics
+    &quot;&quot;&quot;
+    mse = np.mean((y_true - y_pred) ** 2)
+    rmse = np.sqrt(mse)
+    mae = np.mean(np.abs(y_true - y_pred))
+    
+    # R-squared
+    ss_res = np.sum((y_true - y_pred) ** 2)
+    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+    r2 = 1 - (ss_res / ss_tot)
+    
+    return {
+        &#39;MSE&#39;: mse,
+        &#39;RMSE&#39;: rmse,
+        &#39;MAE&#39;: mae,
+        &#39;R²&#39;: r2
+    }
+
+# Make predictions using our trained model
+y_pred = X_with_bias @ theta_gd
+
+# Evaluate the model
+metrics = evaluate_model(y, y_pred)
+
+print(&quot;\nModel Evaluation:&quot;)
+for metric, value in metrics.items():
+    print(f&quot;{metric}: {value:.4f}&quot;)
+</code></pre>
+<h3 id="visualization">Visualization</h3>
+<pre><code class="language-python">def plot_results(X, y, theta, cost_history):
+    &quot;&quot;&quot;
+    Plot the data, regression line, and cost function.
+    &quot;&quot;&quot;
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    
+    # Plot data and regression line
+    ax1.scatter(X, y, alpha=0.6, color=&#39;blue&#39;, label=&#39;Data points&#39;)
+    
+    # Create line for plotting
+    x_line = np.linspace(X.min(), X.max(), 100)
+    y_line = theta[0] + theta[1] * x_line
+    ax1.plot(x_line, y_line, color=&#39;red&#39;, linewidth=2, label=&#39;Regression line&#39;)
+    
+    ax1.set_xlabel(&#39;Feature&#39;)
+    ax1.set_ylabel(&#39;Target&#39;)
+    ax1.set_title(&#39;Linear Regression Fit&#39;)
+    ax1.legend()
+    ax1.grid(True, alpha=0.3)
+    
+    # Plot cost function
+    ax2.plot(cost_history, color=&#39;green&#39;, linewidth=2)
+    ax2.set_xlabel(&#39;Iterations&#39;)
+    ax2.set_ylabel(&#39;Cost&#39;)
+    ax2.set_title(&#39;Cost Function During Training&#39;)
+    ax2.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.show()
+
+# Create the plots
+plot_results(X, y, theta_gd, cost_history)
+</code></pre>
+<h2 id="advanced-topics">Advanced Topics</h2>
+<h3 id="regularization">Regularization</h3>
+<p>To prevent overfitting, we can add regularization terms:</p>
+<h4 id="ridge-regression-l2-regularization">Ridge Regression (L2 Regularization)</h4>
+<p>$$J(\boldsymbol{\beta}) = \frac{1}{2m} \sum_{i=1}^{m} (h_{\boldsymbol{\beta}}(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \sum_{j=1}^{n} \beta_j^2$$</p>
+<pre><code class="language-python">def ridge_regression(X, y, lambda_reg):
+    &quot;&quot;&quot;
+    Implement Ridge regression using the normal equation.
+    
+    Parameters:
+    X (numpy.ndarray): Feature matrix
+    y (numpy.ndarray): Target vector
+    lambda_reg (float): Regularization parameter
+    
+    Returns:
+    numpy.ndarray: Optimized parameters
+    &quot;&quot;&quot;
+    X_with_bias = np.c_[np.ones((X.shape[0], 1)), X]
+    n_features = X_with_bias.shape[1]
+    
+    # Create identity matrix, but don&#39;t regularize the bias term
+    I = np.eye(n_features)
+    I[0, 0] = 0  # Don&#39;t regularize bias term
+    
+    # Ridge regression normal equation
+    theta = np.linalg.inv(X_with_bias.T @ X_with_bias + lambda_reg * I) @ X_with_bias.T @ y
+    
+    return theta
+
+# Test Ridge regression
+theta_ridge = ridge_regression(X, y, lambda_reg=0.1)
+print(f&quot;Ridge Regression: θ₀ = {theta_ridge[0]:.2f}, θ₁ = {theta_ridge[1]:.2f}&quot;)
+</code></pre>
+<h4 id="lasso-regression-l1-regularization">Lasso Regression (L1 Regularization)</h4>
+<p>For Lasso regression, we need iterative methods since there&#39;s no closed-form solution:</p>
+<p>$$J(\boldsymbol{\beta}) = \frac{1}{2m} \sum_{i=1}^{m} (h_{\boldsymbol{\beta}}(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \sum_{j=1}^{n} |\beta_j|$$</p>
+<h3 id="feature-scaling">Feature Scaling</h3>
+<p>When features have different scales, gradient descent can be slow. Here&#39;s how to normalize:</p>
+<pre><code class="language-python">def feature_scaling(X):
+    &quot;&quot;&quot;
+    Normalize features using standardization.
+    
+    Parameters:
+    X (numpy.ndarray): Feature matrix
+    
+    Returns:
+    tuple: (normalized X, mean, std)
+    &quot;&quot;&quot;
+    mean = np.mean(X, axis=0)
+    std = np.std(X, axis=0)
+    X_normalized = (X - mean) / std
+    
+    return X_normalized, mean, std
+
+def denormalize_parameters(theta, mean, std):
+    &quot;&quot;&quot;
+    Convert parameters back to original scale.
+    &quot;&quot;&quot;
+    theta_original = theta.copy()
+    theta_original[1:] = theta_original[1:] / std
+    theta_original[0] = theta_original[0] - np.sum(theta_original[1:] * mean)
+    
+    return theta_original
+
+# Example with feature scaling
+X_norm, X_mean, X_std = feature_scaling(X)
+X_norm_with_bias = np.c_[np.ones((X_norm.shape[0], 1)), X_norm]
+
+# Train with normalized features
+theta_norm, _ = gradient_descent(X_norm_with_bias, y, initial_theta.copy(), 0.1, 1000)
+
+# Convert back to original scale
+theta_original = denormalize_parameters(theta_norm, X_mean, X_std)
+
+print(f&quot;Normalized training: θ₀ = {theta_original[0]:.2f}, θ₁ = {theta_original[1]:.2f}&quot;)
+</code></pre>
+<h2 id="real-world-example-house-price-prediction">Real-World Example: House Price Prediction</h2>
+<p>Let&#39;s create a more realistic example with multiple features:</p>
+<pre><code class="language-python">def create_house_data():
+    &quot;&quot;&quot;
+    Create synthetic house price data.
+    &quot;&quot;&quot;
+    np.random.seed(42)
+    n_samples = 1000
+    
+    # Features: size (sqft), bedrooms, age, location_score
+    size = np.random.normal(2000, 500, n_samples)
+    bedrooms = np.random.randint(1, 6, n_samples)
+    age = np.random.randint(0, 50, n_samples)
+    location_score = np.random.uniform(1, 10, n_samples)
+    
+    # True relationship
+    price = (
+        50 * size +           # $50 per sqft
+        5000 * bedrooms +     # $5000 per bedroom
+        -100 * age +          # Depreciation
+        2000 * location_score + # Location premium
+        100000 +              # Base price
+        np.random.normal(0, 10000, n_samples)  # Noise
+    )
+    
+    features = np.column_stack([size, bedrooms, age, location_score])
+    feature_names = [&#39;Size (sqft)&#39;, &#39;Bedrooms&#39;, &#39;Age (years)&#39;, &#39;Location Score&#39;]
+    
+    return features, price, feature_names
+
+# Create the dataset
+X_house, y_house, feature_names = create_house_data()
+
+print(&quot;House Price Prediction Dataset:&quot;)
+print(f&quot;Features: {feature_names}&quot;)
+print(f&quot;Dataset shape: {X_house.shape}&quot;)
+print(f&quot;Price range: ${y_house.min():,.0f} - ${y_house.max():,.0f}&quot;)
+</code></pre>
+<h3 id="training-the-multi-feature-model">Training the Multi-feature Model</h3>
+<pre><code class="language-python"># Normalize features
+X_house_norm, house_mean, house_std = feature_scaling(X_house)
+X_house_with_bias = np.c_[np.ones((X_house_norm.shape[0], 1)), X_house_norm]
+
+# Split into train/test
+train_size = int(0.8 * len(X_house_with_bias))
+X_train = X_house_with_bias[:train_size]
+X_test = X_house_with_bias[train_size:]
+y_train = y_house[:train_size]
+y_test = y_house[train_size:]
+
+# Train the model
+initial_theta_house = np.random.randn(X_house_with_bias.shape[1]) * 0.01
+theta_house, cost_history_house = gradient_descent(
+    X_train, y_train, initial_theta_house, alpha=0.1, num_iterations=1000
+)
+
+# Make predictions
+y_train_pred = X_train @ theta_house
+y_test_pred = X_test @ theta_house
+
+# Evaluate
+train_metrics = evaluate_model(y_train, y_train_pred)
+test_metrics = evaluate_model(y_test, y_test_pred)
+
+print(&quot;\nHouse Price Model Results:&quot;)
+print(&quot;Training Metrics:&quot;)
+for metric, value in train_metrics.items():
+    print(f&quot;  {metric}: {value:.4f}&quot;)
+
+print(&quot;\nTest Metrics:&quot;)
+for metric, value in test_metrics.items():
+    print(f&quot;  {metric}: {value:.4f}&quot;)
+</code></pre>
+<h2 id="key-assumptions-and-limitations">Key Assumptions and Limitations</h2>
+<h3 id="assumptions-of-linear-regression">Assumptions of Linear Regression</h3>
+<ol>
+<li><strong>Linearity</strong>: The relationship between features and target is linear</li>
+<li><strong>Independence</strong>: Observations are independent of each other</li>
+<li><strong>Homoscedasticity</strong>: Constant variance of residuals</li>
+<li><strong>Normality</strong>: Residuals are normally distributed</li>
+<li><strong>No multicollinearity</strong>: Features are not highly correlated</li>
+</ol>
+<h3 id="when-linear-regression-fails">When Linear Regression Fails</h3>
+<pre><code class="language-python">def check_assumptions(X, y, y_pred):
+    &quot;&quot;&quot;
+    Check linear regression assumptions.
+    &quot;&quot;&quot;
+    residuals = y - y_pred
+    
+    # Check for non-linearity
+    plt.figure(figsize=(15, 5))
+    
+    # Residual plot
+    plt.subplot(1, 3, 1)
+    plt.scatter(y_pred, residuals, alpha=0.6)
+    plt.axhline(y=0, color=&#39;red&#39;, linestyle=&#39;--&#39;)
+    plt.xlabel(&#39;Predicted Values&#39;)
+    plt.ylabel(&#39;Residuals&#39;)
+    plt.title(&#39;Residual Plot&#39;)
+    plt.grid(True, alpha=0.3)
+    
+    # Q-Q plot for normality
+    plt.subplot(1, 3, 2)
+    from scipy import stats
+    stats.probplot(residuals, dist=&quot;norm&quot;, plot=plt)
+    plt.title(&#39;Q-Q Plot (Normality Check)&#39;)
+    plt.grid(True, alpha=0.3)
+    
+    # Histogram of residuals
+    plt.subplot(1, 3, 3)
+    plt.hist(residuals, bins=30, alpha=0.7, edgecolor=&#39;black&#39;)
+    plt.xlabel(&#39;Residuals&#39;)
+    plt.ylabel(&#39;Frequency&#39;)
+    plt.title(&#39;Distribution of Residuals&#39;)
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.show()
+
+# Check assumptions for our house price model
+check_assumptions(X_test[:, 1:], y_test, y_test_pred)
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Linear regression, despite its simplicity, remains one of the most important algorithms in machine learning. We&#39;ve covered:</p>
+<ul>
+<li><strong>Mathematical foundations</strong> and derivations</li>
+<li><strong>Multiple solution approaches</strong>: Normal equation, batch gradient descent, and SGD</li>
+<li><strong>Evaluation metrics</strong> and model assessment</li>
+<li><strong>Advanced techniques</strong> like regularization and feature scaling</li>
+<li><strong>Real-world application</strong> with multi-feature datasets</li>
+<li><strong>Assumption checking</strong> and limitations</li>
+</ul>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ol>
+<li><strong>Start simple</strong>: Linear regression provides a excellent baseline for regression problems</li>
+<li><strong>Understand the math</strong>: The underlying mathematics helps in debugging and improving models</li>
+<li><strong>Check assumptions</strong>: Always validate that your data meets the assumptions of linear regression</li>
+<li><strong>Scale features</strong>: Proper preprocessing can dramatically improve convergence</li>
+<li><strong>Regularize when needed</strong>: Ridge and Lasso regression help prevent overfitting</li>
+</ol>
+<h3 id="next-steps">Next Steps</h3>
+<ul>
+<li>Explore polynomial features for non-linear relationships</li>
+<li>Learn about logistic regression for classification problems</li>
+<li>Study advanced regularization techniques</li>
+<li>Implement linear regression from scratch in different frameworks</li>
+<li>Practice with real datasets from domains like economics, biology, or engineering</li>
+</ul>
+<p>Linear regression is your gateway to understanding more complex algorithms. Master it, and you&#39;ll have a solid foundation for advanced machine learning techniques!</p>
+<hr>
+<p><em>This post covered the complete journey from theory to implementation. Try running the code examples and experiment with different datasets to deepen your understanding of linear regression.</em></p>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="text-center text-secondary text-sm py-6 border-t">
+    <div>&copy; 2025 Goku's Blog</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+  <script>Prism.highlightAll();</script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

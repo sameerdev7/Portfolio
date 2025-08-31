@@ -15,7 +15,7 @@ tocStyle: "clean"
 #   - { title: "Conclusion", id: "conclusion", level: 1 }
 ---
 
-## DeepSeek V3/R1 - Understanding Reasoning LLMs
+<!-- ## DeepSeek V3/R1 - Understanding Reasoning LLMs
 ### Multi-Head Latent Attention (MLA)
 ### Mixture-of-Experts (MoE)
 ### DeepSeek Summary
@@ -23,7 +23,7 @@ tocStyle: "clean"
 ## OLMo 2
 ### Normalization Layer Placement
 ### OK-Norm
-### OLMo 2 Summary
+### OLMo 2 Summary -->
 
 Hello! This is my first post. I created this blog to document ML experiments, small projects, and random notes.
 
