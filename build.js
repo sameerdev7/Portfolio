@@ -255,10 +255,24 @@ ${generateMetaTags(post)}
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+<!-- Fixed MathJax Configuration -->
 <script>
 window.MathJax = {
-  tex: { inlineMath: [[', '], ['\\\\(', '\\\\)']] },
-  svg: { fontCache: 'global' }
+  tex: {
+    inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+    displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
+    processEscapes: true,
+    processEnvironments: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+    ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process'
+  },
+  svg: {
+    fontCache: 'global'
+  }
 };
 
 // Theme functionality
@@ -346,6 +360,8 @@ document.addEventListener('DOMContentLoaded', initTheme);
   <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
   <script>Prism.highlightAll();</script>
+  
+  <!-- Fixed MathJax Script -->
   <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>`;
@@ -400,4 +416,4 @@ async function writeStaticFiles(posts) {
     console.error('❌ Build failed:', err);
     process.exit(1);
   }
-})()
+})();
